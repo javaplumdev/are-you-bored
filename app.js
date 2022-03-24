@@ -9,6 +9,17 @@ const music = document.querySelector('.music');
 const busywork = document.querySelector('.busywork');
 const resultContent = document.querySelector('.result-content');
 
+// Range
+const rangeResult = document.querySelector('.range-result');
+const slider = document.querySelector('.slider');
+const rangeButton = document.querySelector('.range-button');
+
+rangeResult.innerHTML = `With friends participant? ${slider.value}`;
+
+slider.oninput = function () {
+	rangeResult.innerHTML = `With friends participant? ${this.value}`;
+};
+
 education.addEventListener('click', education_API);
 recreation.addEventListener('click', recreation_API);
 social.addEventListener('click', social_API);
@@ -18,6 +29,7 @@ cooking.addEventListener('click', cooking_API);
 relaxation.addEventListener('click', relaxation_API);
 music.addEventListener('click', music_API);
 busywork.addEventListener('click', busywork_API);
+rangeButton.addEventListener('click', rangeFunction);
 
 showData();
 
@@ -95,6 +107,16 @@ function music_API() {
 
 function busywork_API() {
 	fetch('http://www.boredapi.com/api/activity?type=busywork')
+		.then((response) => response.json())
+		.then((data) => {
+			resultContent.innerHTML = `<h4 class="border-bottom text-light">${data.activity}</h4>`;
+		});
+}
+
+function rangeFunction() {
+	const sliderValue = slider.value;
+
+	fetch(`https://www.boredapi.com/api/activity?participants=${sliderValue}`)
 		.then((response) => response.json())
 		.then((data) => {
 			resultContent.innerHTML = `<h4 class="border-bottom text-light">${data.activity}</h4>`;
